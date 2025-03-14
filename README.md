@@ -1,14 +1,12 @@
 # Persist Quickfix
 
-## The problem and the solution
+## The Problem and the Solution
 
-Persist Quickfix is a small plugin that came up to mind when I was refactoring a project and was constantly switching back and forth to a small set of entrypoints that I was constantly revisiting. Adding them to [grapple.nvim](https://github.com/cbochs/grapple.nvim) wasn't cutting because sometimes I wanted multiple entries of the same file and grapple only supports one entry per file. Then I started using global marks in addition to grapple marks, but it was getting confusing to manage. Finally, just using quickfix was a bit of a pain because everytime I navigate references with LSP it opens a new quickfix list, so having to constantly do `cold` and `cnew` wasnt cutting either.
+Persist Quickfix is a small plugin that came about while I was refactoring a project and found myself constantly switching between a few entry points that I revisited repeatedly. I tried adding them to [grapple.nvim](https://github.com/cbochs/grapple.nvim), but that wasn't sufficient since I sometimes needed multiple entries from the same file, and grapple only supports one entry per file. I then experimented with combining global marks and grapple marks, but that approach quickly became confusing to manage. Finally, using quickfix directly proved tedious because every time I navigated references with LSP, a new quickfix list would open, forcing me to constantly run commands like `cold` and `cnew`. Persist Quickfix solves this problem by allowing you to assign a name to a given list and load it quickly whenever needed. You can also create custom keymaps for saving and loading specific lists, and everything persists across sessions.
 
-Persist Quickfix solves this problem for me. I can easily assign a name for a given list and quickly load it whenever I want. I can create custom keymaps for saving and loading specific lists and it persists across sessions.
+## Next Steps
 
-## Next steps
+This plugin is **very** early stage. There isn’t a release yet, and the APIs might change. For future features, I’m considering the following:
 
-This plugin is **very** early stage. There isn't any release created yet, and the APIs might change. When it comes to features, this is what I'm thinking:
-
-- [ ] Allow picking quickfix lists from a picker (like telescope or snacks.picker) instead of manually typing the list name
-- [ ] (maybe?) Generate names automatically if the user doesn't type any name
+- [ ] Allow picking quickfix lists from a picker (like telescope or snacks.picker) instead of manually typing the list name.
+- [ ] (Maybe?) Automatically generate names if the user doesn’t enter one.
