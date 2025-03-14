@@ -1,11 +1,15 @@
+--- @class PersistQuickfixConfig
+--- @field storage_dir string The directory where quickfix files are stored.
 local M = {}
 local Utils = require("persist-quickfix.utils")
 
+--- @type PersistQuickfixConfig
 M.config = {
 	storage_dir = vim.fn.stdpath("data") .. "/persist-quickfix",
 }
 
---- @param name string  The name of the quickfix to save
+--- Save the current quickfix list.
+--- @param name string  The name of the quickfix list to save.
 --- @return nil
 function M.save(name)
 	local filepath = M.config.storage_dir .. "/" .. name
@@ -23,7 +27,8 @@ function M.save(name)
 	vim.notify("Quickfix list saved as " .. name, vim.log.levels.INFO)
 end
 
---- @param name string  The name of the quickfix to load
+--- Load a quickfix list.
+--- @param name string  The name of the quickfix list to load.
 --- @return nil
 function M.load(name)
 	local filepath = M.config.storage_dir .. "/" .. name
@@ -48,9 +53,11 @@ function M.load(name)
 	end
 end
 
+--- Setup persist-quickfix with user options.
+--- @param opts PersistQuickfixConfig|nil A table containing user configuration.
+--- @return nil
 function M.setup(opts)
-	M.config = vim.tbl_deep_extend("keep", opts, M.config)
-
+	M.config = vim.tbl_deep_extend("keep", opts or {}, M.config)
 	vim.fn.mkdir(M.config.storage_dir, "p")
 end
 
