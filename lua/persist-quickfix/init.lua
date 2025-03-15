@@ -54,7 +54,7 @@ function M.load(name)
 end
 
 --- Setup persist-quickfix with user options.
---- @param opts PersistQuickfixConfig|nil A table containing user configuration.
+--- @param opts PersistQuickfix.Config|nil A table containing user configuration.
 --- @return nil
 function M.setup(opts)
 	M.config = vim.tbl_deep_extend("keep", opts or {}, M.config)
