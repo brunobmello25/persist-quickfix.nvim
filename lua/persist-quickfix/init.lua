@@ -2,6 +2,9 @@
 local M = {}
 local Utils = require("persist-quickfix.utils")
 
+--- @alias SelectorFunction fun(items: any[], on_choice: fun(item: any|nil): nil): nil
+
+--- @type SelectorFunction
 local function default_selector(items, callback)
 	vim.ui.select(items, {}, function(item)
 		if not item then
@@ -13,6 +16,7 @@ end
 
 --- @class PersistQuickfix.Config
 --- @field storage_dir string|nil The directory where quickfix files are stored.
+--- @field selector SelectorFunction|nil The method use to select items when calling `choose` function. Defaults to `vim.ui.select`
 M.config = {
 	storage_dir = vim.fn.stdpath("data") .. "/persist-quickfix",
 	selector = default_selector,
