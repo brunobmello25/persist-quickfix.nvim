@@ -2,10 +2,20 @@
 local M = {}
 local Utils = require("persist-quickfix.utils")
 
+local function default_selector(items, callback)
+	vim.ui.select(items, {}, function(item)
+		if not item then
+			return
+		end
+		callback(item)
+	end)
+end
+
 --- @class PersistQuickfix.Config
 --- @field storage_dir string|nil The directory where quickfix files are stored.
 M.config = {
 	storage_dir = vim.fn.stdpath("data") .. "/persist-quickfix",
+	selector = default_selector,
 }
 
 --- Save the current quickfix list.
@@ -69,12 +79,7 @@ function M.choose()
 		return
 	end
 
-	vim.ui.select(stored_lists, {}, function(item)
-		if not item then
-			return
-		end
-		M.load(item)
-	end)
+	M.config.selector(stored_lists, M.load)
 end
 
 --- Setup persist-quickfix with user options.
