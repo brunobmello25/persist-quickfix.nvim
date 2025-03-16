@@ -26,6 +26,14 @@ M.config = {
 --- @param name string  The name of the quickfix list to save.
 --- @return nil
 function M.save(name)
+	if not name or name == "" then
+		vim.notify(
+			"No name provided for quickfix list. Aborting.",
+			vim.log.levels.INFO
+		)
+		return
+	end
+
 	local filepath = M.config.storage_dir .. "/" .. name
 
 	local qflist = vim.fn.getqflist()
