@@ -32,6 +32,12 @@ and to load this list later, call the `load` function:
 require('persist-quickfix').load('list-name')
 ```
 
+you can also choose between all your saved quickfixes with `choose`:
+
+```lua
+require('persist-quickfix').choose()
+```
+
 that's it.
 
 ## Configuration
@@ -41,6 +47,11 @@ Here are the default configuration values:
 ```lua
 {
     storage_dir = vim.fn.stdpath('data') .. '/persist-quickfix',
+    selector = function(items, callback)
+        vim.ui.select(items, {}, function(item)
+            callback(item)
+        end)
+    end
 }
 ```
 
