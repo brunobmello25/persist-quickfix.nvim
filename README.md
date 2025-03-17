@@ -66,10 +66,3 @@ Here are the default configuration values:
     end
 }
 ```
-
-## Next Steps
-
-This plugin is **very** early stage. There isn’t a release yet, and the APIs might change. For future features, I’m considering the following:
-
-- [ ] (Maybe?) Automatically generate names if the user doesn’t enter one.
-- [x] Allow picking quickfix lists from a picker (like telescope or snacks.picker) instead of manually typing the list name.
