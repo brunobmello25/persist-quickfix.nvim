@@ -84,6 +84,38 @@ function M.load(name)
 	end
 end
 
+--- @param name string
+function M.delete(name)
+	if not name or name == "" then
+		vim.notify(
+			"No name provided for quickfix list. Aborting deletion.",
+			vim.log.levels.INFO
+		)
+		return
+	end
+
+	local filepath = M.config.storage_dir .. "/" .. name
+	local ok, err = os.remove(filepath)
+	if not ok then
+		vim.notify(
+			"Error deleting quickfix file: " .. err,
+			vim.log.levels.ERROR
+		)
+		return
+	end
+	vim.notify("Quickfix list '" .. name .. "' deleted.", vim.log.levels.INFO)
+end
+
+function M.choose_delete()
+	local ok, stored_lists = Utils.list_stored_lists(M.config.storage_dir)
+
+	if not ok then
+		return
+	end
+
+	M.config.selector(stored_lists, M.delete)
+end
+
 function M.choose()
 	local ok, stored_lists = Utils.list_stored_lists(M.config.storage_dir)
 
