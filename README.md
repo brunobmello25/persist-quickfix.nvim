@@ -38,6 +38,18 @@ you can also choose between all your saved quickfixes with `choose`:
 require('persist-quickfix').choose()
 ```
 
+to delete an item, simply call `delete` passing the list name:
+
+```lua
+require('persist-quickfix').delete('list-name')
+```
+
+or you can call `choose_delete` to open a picker and choose which list you would like to delete
+
+```lua
+require('persist-quickfix').choose_delete()
+```
+
 that's it.
 
 ## Configuration
