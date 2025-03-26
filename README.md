@@ -20,37 +20,98 @@ For example, with lazy.nvim:
 
 ## Usage
 
-Given a quickfix, you can save by calling the `save` function and passing it a name:
+### Saving and Loading Quickfix Lists
+
+When you have an active quickfix list, you can save it by calling the `save` function and providing a name:
 
 ```lua
 require('persist-quickfix').save('list-name')
 ```
 
-and to load this list later, call the `load` function:
+Later, load that quickfix list using the `load` function:
 
 ```lua
 require('persist-quickfix').load('list-name')
 ```
 
-you can also choose between all your saved quickfixes with `choose`:
+You can choose among all your saved quickfixes with `choose`:
 
 ```lua
 require('persist-quickfix').choose()
 ```
 
-to delete an item, simply call `delete` passing the list name:
+To delete an item, simply call `delete` with its list name:
 
 ```lua
 require('persist-quickfix').delete('list-name')
 ```
 
-or you can call `choose_delete` to open a picker and choose which list you would like to delete
+Alternatively, open a picker to choose which list to delete via `choose_delete`:
 
 ```lua
 require('persist-quickfix').choose_delete()
 ```
 
-that's it.
+### Extended Usage Examples
+
+Below is an example of how you can extend your Neovim configuration by creating user commands and key mappings. In this example, user commands `SaveQuickfix`, `LoadQuickfix`, and `DeleteQuickfix` are defined to streamline saving, loading, and deleting quickfix lists. Additionally, convenient keymaps are set for saving and loading.
+
+```lua
+return {
+  {
+    'brunobmello25/persist-quickfix.nvim',
+    --- @type PersistQuickfix.Config
+    opts = {},
+    init = function()
+      local persist_quickfix = require 'persist-quickfix'
+
+      -- Create a user command to delete a quickfix list using a picker.
+      vim.api.nvim_create_user_command('DeleteQuickfix', function()
+        persist_quickfix.choose_delete()
+      end, {})
+
+      -- Create a user command to load a quickfix list using a picker.
+      vim.api.nvim_create_user_command('LoadQuickfix', function()
+        persist_quickfix.choose()
+      end, {})
+
+      -- Create a user command to save the current quickfix list.
+      -- Accepts an optional argument for the quickfix list name.
+      vim.api.nvim_create_user_command('SaveQuickfix', function(args)
+        if args.fargs[1] and args.fargs[1] ~= '' then
+          persist_quickfix.save(args.fargs[1])
+        else
+          vim.ui.input({ prompt = 'Quickfix name: ' }, function(value)
+            if value then
+              persist_quickfix.save(value)
+            end
+          end)
+        end
+      end, { nargs = '?' })
+
+      -- Key mappings for convenience:
+      -- <leader>sq will prompt to save the current quickfix list.
+      -- <leader>lq will prompt to load a saved quickfix list.
+      vim.keymap.set('n', '<leader>sq', '<cmd>SaveQuickfix<CR>')
+      vim.keymap.set('n', '<leader>lq', '<cmd>LoadQuickfix<CR>')
+    end,
+  },
+}
+```
+
+### How It Works
+
+1. The `SaveQuickfix` command saves the current quickfix list. You can either provide a list name as an argument:
+   - Command Mode: `:SaveQuickfix my-list`
+   
+   Or omit the argument to be prompted for a name via `vim.ui.input`:
+   - Command Mode: `:SaveQuickfix`
+
+2. The `LoadQuickfix` command lets you pick among all saved quickfix lists to load one.
+
+3. The `DeleteQuickfix` command opens a picker to choose which quickfix list to delete.
+
+4. Key mappings (`<leader>sq` and `<leader>lq`) provide an even quicker alternative for saving and loading respectively.
 
 ## Configuration
 
