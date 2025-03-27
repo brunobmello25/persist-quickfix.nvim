@@ -54,7 +54,7 @@ require('persist-quickfix').choose_delete()
 
 ### Extended Usage Examples
 
-Below is an example of how you can extend your Neovim configuration by creating user commands and key mappings. In this example, user commands `SaveQuickfix`, `LoadQuickfix`, and `DeleteQuickfix` are defined to streamline saving, loading, and deleting quickfix lists. Additionally, convenient keymaps are set for saving and loading.
+Below is an example of how you can extend your Neovim configuration by creating user commands and key mappings. In this example, user commands `SaveQuickfix`, `LoadQuickfix`, and `DeleteQuickfix` are defined for saving, loading, and deleting quickfix lists. We also set keymaps for saving and loading.
 
 ```lua
 return {
@@ -111,7 +111,7 @@ return {
 
 3. The `DeleteQuickfix` command opens a picker to choose which quickfix list to delete.
 
-4. Key mappings (`<leader>sq` and `<leader>lq`) provide an even quicker alternative for saving and loading respectively.
+4. Key mappings (`<leader>sq` and `<leader>lq`) to facilitate using these commands.
 
 ## Configuration
 
