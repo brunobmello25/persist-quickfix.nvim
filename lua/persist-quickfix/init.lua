@@ -84,7 +84,9 @@ function M.load(name)
 	end
 end
 
+--- Save the quickfix list with the given name.
 --- @param name string
+--- @return nil
 function M.delete(name)
 	if not name or name == "" then
 		vim.notify(
@@ -106,16 +108,29 @@ function M.delete(name)
 	vim.notify("Quickfix list '" .. name .. "' deleted.", vim.log.levels.INFO)
 end
 
+--- Prompt the user to pick a saved quickfix list to delete.
+--- @return nil
 function M.choose_delete()
 	local ok, stored_lists = Utils.list_stored_lists(M.config.storage_dir)
 
 	if not ok then
+		vim.notify(
+			"failed to list quickfix lists to delete",
+			vim.log.levels.WARN
+		)
+		return
+	end
+
+	if #stored_lists == 0 then
+		vim.notify("There are no stored lists to delete", vim.log.levels.INFO)
 		return
 	end
 
 	M.config.selector(stored_lists, M.delete)
 end
 
+--- Prompt the user to pick a saved quickfix list to open.
+--- @return nil
 function M.choose()
 	local ok, stored_lists = Utils.list_stored_lists(M.config.storage_dir)
 
