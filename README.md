@@ -60,6 +60,14 @@ require('persist-quickfix').merge('source1', 'source2', 'target')
 
 This will combine the contents of `source1` and `source2` into a new quickfix list named `target`.
 
+To rename an existing quickfix list, use the `rename` function:
+
+```lua
+require('persist-quickfix').rename('old-name', 'new-name')
+```
+
+This will rename the quickfix list from `old-name` to `new-name`.
+
 ### Extended Usage Examples
 
 Below is an example of how you can extend your Neovim configuration by creating user commands and key mappings. In this example, user commands `SaveQuickfix`, `LoadQuickfix`, and `DeleteQuickfix` are defined for saving, loading, and deleting quickfix lists. We also set keymaps for saving and loading.

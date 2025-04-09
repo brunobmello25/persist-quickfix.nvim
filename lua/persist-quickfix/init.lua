@@ -225,4 +225,70 @@ function M.merge(source1, source2, target)
 	)
 end
 
+--- Rename a quickfix list.
+--- @param old_name string The current name of the quickfix list.
+--- @param new_name string The new name for the quickfix list.
+--- @return nil
+function M.rename(old_name, new_name)
+	if not old_name or not new_name then
+		vim.notify(
+			"Both old and new names are required for renaming a quickfix list.",
+			vim.log.levels.INFO
+		)
+		return
+	end
+
+	if old_name == new_name then
+		vim.notify(
+			"The new name is the same as the old name. No changes made.",
+			vim.log.levels.INFO
+		)
+		return
+	end
+
+	local old_filepath = M.config.storage_dir .. "/" .. old_name
+	local new_filepath = M.config.storage_dir .. "/" .. new_name
+
+	-- Check if the old file exists
+	local file, err = io.open(old_filepath, "r")
+	if not file then
+		vim.notify(
+			"Error: Quickfix list '" .. old_name .. "' does not exist: " .. err,
+			vim.log.levels.ERROR
+		)
+		return
+	end
+	file:close()
+
+	-- Check if the new name already exists
+	file, err = io.open(new_filepath, "r")
+	if file then
+		file:close()
+		vim.notify(
+			"Error: A quickfix list with the name '" .. new_name .. "' already exists.",
+			vim.log.levels.ERROR
+		)
+		return
+	end
+
+	-- Rename the file
+	local ok, err = os.rename(old_filepath, new_filepath)
+	if not ok then
+		vim.notify(
+			"Error renaming quickfix list: " .. err,
+			vim.log.levels.ERROR
+		)
+		return
+	end
+
+	vim.notify(
+		string.format(
+			"Successfully renamed quickfix list from '%s' to '%s'",
+			old_name,
+			new_name
+		),
+		vim.log.levels.INFO
+	)
+end
+
 return M
