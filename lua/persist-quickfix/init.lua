@@ -149,4 +149,80 @@ function M.setup(opts)
 	vim.fn.mkdir(M.config.storage_dir, "p")
 end
 
+--- Merge two quickfix lists into a new one.
+--- @param source1 string The name of the first quickfix list.
+--- @param source2 string The name of the second quickfix list.
+--- @param target string The name of the resulting merged quickfix list.
+--- @return nil
+function M.merge(source1, source2, target)
+	if not source1 or not source2 or not target then
+		vim.notify(
+			"Source and target names are required for merging quickfix lists.",
+			vim.log.levels.INFO
+		)
+		return
+	end
+
+	local filepath1 = M.config.storage_dir .. "/" .. source1
+	local filepath2 = M.config.storage_dir .. "/" .. source2
+	local target_filepath = M.config.storage_dir .. "/" .. target
+
+	-- Read first quickfix list
+	local file1, err1 = io.open(filepath1, "r")
+	if not file1 then
+		vim.notify(
+			"Error opening first quickfix file: " .. err1,
+			vim.log.levels.ERROR
+		)
+		return
+	end
+	local json1 = file1:read("*a")
+	file1:close()
+	local qflist1 = vim.fn.json_decode(json1)
+
+	-- Read second quickfix list
+	local file2, err2 = io.open(filepath2, "r")
+	if not file2 then
+		vim.notify(
+			"Error opening second quickfix file: " .. err2,
+			vim.log.levels.ERROR
+		)
+		return
+	end
+	local json2 = file2:read("*a")
+	file2:close()
+	local qflist2 = vim.fn.json_decode(json2)
+
+	-- Merge the lists
+	local merged_list = {}
+	for _, item in ipairs(qflist1) do
+		table.insert(merged_list, item)
+	end
+	for _, item in ipairs(qflist2) do
+		table.insert(merged_list, item)
+	end
+
+	-- Save the merged list
+	local json = vim.fn.json_encode(merged_list)
+	local target_file, err = io.open(target_filepath, "w")
+	if not target_file then
+		vim.notify(
+			"Error saving merged quickfix list: " .. err,
+			vim.log.levels.ERROR
+		)
+		return
+	end
+	target_file:write(json)
+	target_file:close()
+	vim.notify(
+		string.format(
+			"Successfully merged '%s' and '%s' into '%s'",
+			source1,
+			source2,
+			target
+		),
+		vim.log.levels.INFO
+	)
+end
+
 return M

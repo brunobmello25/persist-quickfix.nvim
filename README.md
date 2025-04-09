@@ -52,6 +52,14 @@ Alternatively, open a picker to choose which list to delete via `choose_delete`:
 require('persist-quickfix').choose_delete()
 ```
 
+To merge two quickfix lists into a new one, use the `merge` function:
+
+```lua
+require('persist-quickfix').merge('source1', 'source2', 'target')
+```
+
+This will combine the contents of `source1` and `source2` into a new quickfix list named `target`.
+
 ### Extended Usage Examples
 
 Below is an example of how you can extend your Neovim configuration by creating user commands and key mappings. In this example, user commands `SaveQuickfix`, `LoadQuickfix`, and `DeleteQuickfix` are defined for saving, loading, and deleting quickfix lists. We also set keymaps for saving and loading.
