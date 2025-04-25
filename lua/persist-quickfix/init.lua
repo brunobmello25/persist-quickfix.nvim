@@ -291,4 +291,14 @@ function M.rename(old_name, new_name)
 	)
 end
 
+function M.choose_override()
+	local ok, stored_lists = Utils.list_stored_lists(M.config.storage_dir)
+
+	if not ok then
+		return
+	end
+
+	M.config.selector(stored_lists, M.save)
+end
+
 return M
