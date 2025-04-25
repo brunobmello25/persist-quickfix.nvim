@@ -68,6 +68,14 @@ require('persist-quickfix').rename('old-name', 'new-name')
 
 This will rename the quickfix list from `old-name` to `new-name`.
 
+To override an existing quickfix list with the current one, use the `choose_override` function:
+
+```lua
+require('persist-quickfix').choose_override()
+```
+
+This will open a picker to select which existing quickfix list to override with the current one.
+
 ### Extended Usage Examples
 
 Below is an example of how you can extend your Neovim configuration by creating user commands and key mappings. In this example, user commands `SaveQuickfix`, `LoadQuickfix`, and `DeleteQuickfix` are defined for saving, loading, and deleting quickfix lists. We also set keymaps for saving and loading.
